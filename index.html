@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>Screen-shot</title>
+  <script src="//cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <!-- html2Canvas読み込み -->
+  <script src="//cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.js"></script>
+</head>
+<body>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/Uh6dkL1M9DM" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<div id="your_tag">
+	<input type="text" v-model="your_tag" id="user_data"><!-- URLを入力 -->
+</div>
+<div id="target"></div>
+<div id="result"></div>
+<script>
+var result = document.getElementById('result');
+var target = document.getElementById('target');
+var your_tag = new Vue({
+  el: '#your_tag',
+  data: {
+    your_tag: ''
+  },
+  watch: {
+  	your_tag: function(){
+  		//iframe生成
+  		let iframe = document.createElement('iframe');
+  		iframe.src = document.getElementById('user_data').value;
+  		iframe.width = '600';
+  		iframe.height = '350';
+  		iframe.id = 'yt';
+  		target.appendChild(iframe);
+
+  		//キャプチャ生成
+		html2canvas(target,{
+			onrendered: function(canvas){
+				var data = canvas.toDataURL("image/png");
+				let img = document.createElement('img');
+				img.src = data;
+				result.appendChild(img);
+			}
+		});
+  	}
+  }
+});
+// window.onload = function(){
+// 	html2canvas(document.getElementById("target"),{
+// 		onrendered: function(canvas){
+// 			var data = canvas.toDataURL("image/png");
+// 			document.getElementById("ss").src = data;
+// 		}
+// 	});
+// }
+</script>
+</body>
+</html>
